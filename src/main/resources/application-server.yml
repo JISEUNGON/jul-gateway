@@ -1,0 +1,60 @@
+
+server:
+  port: 8080
+
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: ${EUREKA_URL}/eureka
+spring:
+  config:
+    activate:
+      on-profile: server
+
+  application:
+    name: julindang-gateway
+  devtools:
+    livereload:
+      enabled: true
+  cloud:
+    gateway:
+      enabled: true
+      routes:
+        - id: no-authority
+          uri: lb://MEMBER
+          predicates:
+            - Path=/token/**, /member/sign-up, /member/verify, /member/swagger-ui.html, /member/nickname
+
+        - id: login
+          uri: lb://LOGIN
+          predicates:
+            - Path=/login/**
+
+        - id: member
+          uri: lb://MEMBER
+          predicates:
+            - Path=/member/**, /auth/**, /token/**
+          filters:
+            - JwtUserFilter
+
+        - id: member-admin
+          uri: lb://MEMBER
+          predicates:
+            - Path=/admin/**
+          filters:
+            - JwtAdminFilter
+
+jwt:
+  secret: ${JWT_SECRET_KEY}
+
+logging:
+  level:
+    org:
+      springframework:
+        cloud:
+          gateway=ERROR:
+
+gateway:
+  host: ${GATEWAY_URL}

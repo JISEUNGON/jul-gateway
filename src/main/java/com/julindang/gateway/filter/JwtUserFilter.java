@@ -33,17 +33,6 @@ public class JwtUserFilter extends AbstractGatewayFilterFactory<JwtUserFilter.Co
 
             //header 값
             String authorizationHeader = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
-            String memberIdString = request.getHeaders().getFirst("Member-Id");
-
-            if(memberIdString == null || !memberIdString.startsWith("DHI ")) {
-                response.setStatusCode(HttpStatus.UNAUTHORIZED);
-                // 응답 내용 수정
-                String modifiedResponse = "Member id header is null";
-                DataBuffer newResponseData = response.bufferFactory().wrap(modifiedResponse.getBytes(StandardCharsets.UTF_8));
-                response.getHeaders().setContentLength(modifiedResponse.length());
-
-                return response.writeWith(Flux.just(newResponseData));
-            }
 
             // bearer이 아니면 오류
             if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
@@ -58,7 +47,6 @@ public class JwtUserFilter extends AbstractGatewayFilterFactory<JwtUserFilter.Co
 
             // Token, memberId 꺼내기
             String token = authorizationHeader.split(" ")[1];
-            Long memberId = Long.parseLong(memberIdString.split("DHI ")[1]);
 
             // Token 검증
             if (!JwtUtil.validateToken(token)) {
@@ -90,7 +78,6 @@ public class JwtUserFilter extends AbstractGatewayFilterFactory<JwtUserFilter.Co
 
             headers.setContentType(MediaType.APPLICATION_JSON); // Content-Type 헤더 설정
             headers.set("Authorization", "Bearer " + token);
-            headers.set("Member-Id", "DHI " + memberId.toString());
 
             HttpEntity<String> requestEntity = new HttpEntity<>(null, headers);
 

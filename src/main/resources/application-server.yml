@@ -25,7 +25,7 @@ spring:
         - id: no-authority
           uri: lb://MEMBER
           predicates:
-            - Path=/token/**, /member/sign-up, /member/verify, /member/swagger-ui.html, /member/nickname
+            - Path=/token/**, /member/sign-up, /member/verify, /member/swagger-ui.html, /member/nickname, /member/login
 
         - id: no-authority1
           uri: lb://CAFE
@@ -35,7 +35,7 @@ spring:
         - id: etc
           uri: lb://MEMBER
           predicates:
-            - Path=/etc/**
+            - Path=/etc/diabetes/**
 
         - id: sms
           uri: lb://MEMBER
@@ -50,7 +50,7 @@ spring:
         - id: member
           uri: lb://MEMBER
           predicates:
-            - Path=/member/sign-up, /member/nickname, /member/login, /auth/check, /token/**
+            - Path=/member/sign-up, /member/nickname, /auth/check, /token/**
           filters:
             - JwtUserFilter
 

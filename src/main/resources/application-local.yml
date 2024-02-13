@@ -64,7 +64,7 @@ spring:
         - id: member-admin
           uri: lb://MEMBER
           predicates:
-            - Path=/member/**
+            - Path=/member/**, /auth/**
           filters:
             - JwtAdminFilter
 
@@ -79,4 +79,4 @@ logging:
           gateway=ERROR:
 
 gateway:
-  host: http://127.0.0.1:8080
+  host: http://127.0.0.1:8081/auth/check

@@ -27,22 +27,44 @@ spring:
           predicates:
             - Path=/token/**, /member/sign-up, /member/verify, /member/swagger-ui.html, /member/nickname
 
-        - id: login
-          uri: lb://LOGIN
+        - id: no-authority1
+          uri: lb://CAFE
           predicates:
-            - Path=/login/**
+            - Path=/cafe/find-by-cafe-name-and-beverage-name, /cafe/find-by-cafe-name, /cafe/find-by-beverage-name
+
+        - id: etc
+          uri: lb://MEMBER
+          predicates:
+            - Path=/etc/**
+
+        - id: sms
+          uri: lb://MEMBER
+          predicates:
+            - Path=/sms/**
+
+        - id: consume
+          uri: lb://CONSUME
+          predicates:
+            - Path=/consume/**
 
         - id: member
           uri: lb://MEMBER
           predicates:
-            - Path=/member/**, /auth/**, /token/**
+            - Path=/member/sign-up, /member/nickname, /member/login, /auth/check, /token/**
           filters:
             - JwtUserFilter
+
+        - id: cafe
+          uri: lb://CAFE
+          predicates:
+            - Path=/cafe/save, /cafe/delete
+          filters:
+            - JwtAdminFilter
 
         - id: member-admin
           uri: lb://MEMBER
           predicates:
-            - Path=/admin/**
+            - Path=/member/**, /auth/**
           filters:
             - JwtAdminFilter
 

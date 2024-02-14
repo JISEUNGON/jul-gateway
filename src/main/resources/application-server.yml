@@ -8,6 +8,9 @@ eureka:
     register-with-eureka: true
     service-url:
       defaultZone: ${EUREKA_URL}/eureka
+  instance:
+    prefer-ip-address: ${EUREKA_INSTANCE_PREFER_IP_ADDRESS}
+    ip-address: ${EUREKA_INSTANCE_IP_ADDRESS}
 spring:
   config:
     activate:

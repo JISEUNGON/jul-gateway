@@ -42,6 +42,8 @@ public class JwtAdminFilter extends AbstractGatewayFilterFactory<JwtAdminFilter.
                 DataBuffer newResponseData = response.bufferFactory().wrap(modifiedResponse.getBytes(StandardCharsets.UTF_8));
                 response.getHeaders().setContentLength(modifiedResponse.length());
 
+                log.error("not bearer token");
+
                 return response.writeWith(Flux.just(newResponseData));
             }
 
@@ -56,6 +58,8 @@ public class JwtAdminFilter extends AbstractGatewayFilterFactory<JwtAdminFilter.
                 DataBuffer newResponseData = response.bufferFactory().wrap(modifiedResponse.getBytes(StandardCharsets.UTF_8));
                 response.getHeaders().setContentLength(modifiedResponse.length());
 
+                log.error("JWT token is not valid.");
+
                 return response.writeWith(Flux.just(newResponseData));
             }
 
@@ -66,6 +70,8 @@ public class JwtAdminFilter extends AbstractGatewayFilterFactory<JwtAdminFilter.
                 String modifiedResponse = "JWT Token is expired.";
                 DataBuffer newResponseData = response.bufferFactory().wrap(modifiedResponse.getBytes(StandardCharsets.UTF_8));
                 response.getHeaders().setContentLength(modifiedResponse.length());
+
+                log.error("JWT token is expired.");
 
                 return response.writeWith(Flux.just(newResponseData));
             }
@@ -89,6 +95,8 @@ public class JwtAdminFilter extends AbstractGatewayFilterFactory<JwtAdminFilter.
                 String modifiedResponse = "Token is not admin token.";
                 DataBuffer newResponseData = response.bufferFactory().wrap(modifiedResponse.getBytes(StandardCharsets.UTF_8));
                 response.getHeaders().setContentLength(modifiedResponse.length());
+
+                log.error("Token is not admin token.");
 
                 return response.writeWith(Flux.just(newResponseData));
             }

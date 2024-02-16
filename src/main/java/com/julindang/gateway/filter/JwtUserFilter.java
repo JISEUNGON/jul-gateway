@@ -42,6 +42,8 @@ public class JwtUserFilter extends AbstractGatewayFilterFactory<JwtUserFilter.Co
                 DataBuffer newResponseData = response.bufferFactory().wrap(modifiedResponse.getBytes(StandardCharsets.UTF_8));
                 response.getHeaders().setContentLength(modifiedResponse.length());
 
+                log.error("JWT Token does not begin with Bearer String.");
+
                 return response.writeWith(Flux.just(newResponseData));
             }
 
@@ -56,6 +58,8 @@ public class JwtUserFilter extends AbstractGatewayFilterFactory<JwtUserFilter.Co
                 DataBuffer newResponseData = response.bufferFactory().wrap(modifiedResponse.getBytes(StandardCharsets.UTF_8));
                 response.getHeaders().setContentLength(modifiedResponse.length());
 
+                log.error("JWT Token is not valid.");
+
                 return response.writeWith(Flux.just(newResponseData));
             }
 
@@ -66,6 +70,8 @@ public class JwtUserFilter extends AbstractGatewayFilterFactory<JwtUserFilter.Co
                 String modifiedResponse = "JWT Token is expired.";
                 DataBuffer newResponseData = response.bufferFactory().wrap(modifiedResponse.getBytes(StandardCharsets.UTF_8));
                 response.getHeaders().setContentLength(modifiedResponse.length());
+
+                log.error("WT Token is expired.");
 
                 return response.writeWith(Flux.just(newResponseData));
             }
@@ -91,6 +97,8 @@ public class JwtUserFilter extends AbstractGatewayFilterFactory<JwtUserFilter.Co
                 String modifiedResponse = "User does not have permission.";
                 DataBuffer newResponseData = response.bufferFactory().wrap(modifiedResponse.getBytes(StandardCharsets.UTF_8));
                 response.getHeaders().setContentLength(modifiedResponse.length());
+
+                log.error("User does not have permission.");
 
                 return response.writeWith(Flux.just(newResponseData));
             }

@@ -49,6 +49,8 @@ spring:
           uri: lb://CONSUME
           predicates:
             - Path=/consume/**
+          filters:
+            - JwtUserFilter
 
         - id: member
           uri: lb://MEMBER

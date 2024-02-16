@@ -85,3 +85,6 @@ logging:
 
 gateway:
   host: http://127.0.0.1:8081/auth/check
+
+log:
+  dir: ${LOG_DIR}

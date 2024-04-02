@@ -90,15 +90,13 @@ public class JwtUserFilter extends AbstractGatewayFilterFactory<JwtUserFilter.Co
             final String tokenResponse = restTemplate.exchange(host, HttpMethod.GET, requestEntity, String.class).getBody();
 
             if(tokenResponse == null) {
-                log.info("role: {}", "ROLE_USER");
-
                 response.setStatusCode(HttpStatus.UNAUTHORIZED);
                 // 응답 내용 수정
-                String modifiedResponse = "User does not have permission.";
+                String modifiedResponse = "Token does not have permission.";
                 DataBuffer newResponseData = response.bufferFactory().wrap(modifiedResponse.getBytes(StandardCharsets.UTF_8));
                 response.getHeaders().setContentLength(modifiedResponse.length());
 
-                log.error("User does not have permission.");
+                log.error("Token does not have permission.");
 
                 return response.writeWith(Flux.just(newResponseData));
             }
